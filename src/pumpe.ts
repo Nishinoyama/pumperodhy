@@ -1,23 +1,67 @@
 export class PumpState {
   pump: string;
   permutation: boolean;
+  generatePump: () => string;
+  permutationWeights: number[];
 
   constructor(pump: string, permutation: boolean) {
     this.pump = pump;
     this.permutation = permutation;
+    this.generatePump = permutation ? this.generatePermutationPump : this.generateCombinationPump;
+
+    // To determine the length of the permutation
+    const pumpRes = this.pump.split("");
+    let n = pumpRes.length;
+    let weight = 1;
+    const weights = [1];
+    for (let i = 0; i < n; i++) {
+      weight *= pumpRes.length - i;
+      weights.push(weight);
+    }
+    this.permutationWeights = weights;
+    for (let i = 1; i < n; i++) {
+      weights[i] += weights[i - 1];
+    }
   }
 
-  generatePump(): string {
-    const pumpRes = this.pump.split("").filter((_) => Math.random() < 0.5);
-    if (pumpRes.length === 0) {
-      return this.generatePump();
+  generateCombinationPump(): string {
+    const res = this.pump.split("").filter((_) => Math.random() < 0.5).join("");
+    if (res === "" || res === this.pump) {
+      return this.generateCombinationPump();
     }
-    if (this.permutation) {
-      const order = Array.from({length: pumpRes.length}, _ => Math.random());
-      const sorted = order.map((_, i) => i).sort((a, b) => order[a] - order[b]);
-      return sorted.map(i => pumpRes[i]).join("");
+    return res;
+  }
+
+  generatePermutationPump(): string {
+    const pumpRes = this.pump.split("");
+    const length = this.getPermutationRandomLength();
+    const levels = Array.from({length: length}, _ => Math.random());
+    const order = levels.map((_, i) => i).sort((a, b) => levels[a] - levels[b]);
+    const res = order.map((i) => pumpRes[i]).slice(0, length).join("");
+    if (res === this.pump) {
+      return this.generatePermutationPump();
     }
-    return pumpRes.join("");
+    return res;
+  }
+
+  getPermutationRandomLength(): number {
+    const random = Math.floor(Math.random() * this.permutationWeights[this.permutationWeights.length - 1]);
+    let length = 0;
+    for (let i = 0; i < this.permutationWeights.length; i++) {
+      if (random < this.permutationWeights[i]) {
+        length = i;
+        break;
+      }
+    }
+    if (length === 0) {
+      return this.getPermutationRandomLength();
+    }
+    return length;
+  }
+
+  changeMode(): void {
+    this.permutation = !this.permutation;
+    this.generatePump = this.permutation ? this.generatePermutationPump : this.generateCombinationPump;
   }
 }
 
@@ -30,18 +74,16 @@ export function setupPump(element: HTMLButtonElement, pumpState: PumpState, resu
 
 export function setupPermutation(element: HTMLButtonElement, pumpState: PumpState) {
   element.addEventListener('click', () => {
-    pumpState.permutation = !pumpState.permutation;
+    pumpState.changeMode();
     element.innerHTML = pumpState.permutation ? "Enabled" : "Disabled";
   });
 }
 
 function evalPump(pump: string): string {
-
   if (pump === "プンポロドイハ") {
     return `<span class='pump-tier1'>${pump}</span>`;
   }
   if (["ドロポン", "ハイドロ", "ハイポン"].includes(pump)) {
-    console.log(pump);
     return `<span class='pump-tier2'>${pump}</span>`;
   }
   if (["ポンプ", "イドンプ", "ドロンプ", "ハインプ", "ハドロン"].includes(pump)) {
