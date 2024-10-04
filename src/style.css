@@ -113,3 +113,49 @@ div#results {
   margin: 0 auto;
   text-align: left;
 }
+
+@keyframes tier1-background {
+  0% {
+    background-color: #4a1212;
+  }
+  50% {
+    background-color: #4a4a12;
+  }
+  100% {
+    background-color: #124a12;
+  }
+}
+
+span.pump-tier1 {
+  animation: tier1-background 2s alternate-reverse infinite;
+}
+span.pump-tier2 {
+  background: #4a4a12;
+}
+span.pump-tier3 {
+  background: #124a12;
+}
+
+@media (prefers-color-scheme: light) {
+  @keyframes tier1-background {
+    0% {
+      background-color: #f9ccf9;
+    }
+    50% {
+      background-color: #f9f9cc;
+    }
+    100% {
+      background-color: #ccf9cc;
+    }
+  }
+
+  span.pump-tier1 {
+    animation: tier1-background 2s alternate-reverse infinite;
+  }
+  span.pump-tier2 {
+    background: #f9f9cc;
+  }
+  span.pump-tier3 {
+    background: #ccf9cc;
+  }
+}

@@ -23,7 +23,7 @@ export class PumpState {
 
 export function setupPump(element: HTMLButtonElement, pumpState: PumpState, results: HTMLDivElement, times: number = 1) {
   element.addEventListener('click', () => {
-    const pump = Array.from({length: times}, () => `<li>${pumpState.generatePump()}</li>`).join(" ");
+    const pump = Array.from({length: times}, () => `<li>${evalPump(pumpState.generatePump())}</li>`).join("");
     results.innerHTML = `<ul>${pump}</ul>`;
   });
 }
@@ -33,4 +33,19 @@ export function setupPermutation(element: HTMLButtonElement, pumpState: PumpStat
     pumpState.permutation = !pumpState.permutation;
     element.innerHTML = pumpState.permutation ? "Enabled" : "Disabled";
   });
+}
+
+function evalPump(pump: string): string {
+
+  if (pump === "プンポロドイハ") {
+    return `<span class='pump-tier1'>${pump}</span>`;
+  }
+  if (["ドロポン", "ハイドロ", "ハイポン"].includes(pump)) {
+    console.log(pump);
+    return `<span class='pump-tier2'>${pump}</span>`;
+  }
+  if (["ポンプ", "イドンプ", "ドロンプ", "ハインプ", "ハドロン"].includes(pump)) {
+    return `<span class='pump-tier3'>${pump}</span>`;
+  }
+  return pump;
 }
