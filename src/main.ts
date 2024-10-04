@@ -5,7 +5,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
     <h1>Pumperodhy<h1>
     <div>
-      <button id="permutation"> Permutation Enabled </button>
+      <button id="permutation"> Permutation Disabled </button>
     </div>
     <div>
       <button id="generate">Generate</button>
