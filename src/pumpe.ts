@@ -21,15 +21,16 @@ export class PumpState {
   }
 }
 
-export function setupPump(element: HTMLButtonElement, pumpState: PumpState) {
+export function setupPump(element: HTMLButtonElement, pumpState: PumpState, results: HTMLDivElement, times: number = 1) {
   element.addEventListener('click', () => {
-    element.innerHTML = pumpState.generatePump();
+    const pump = Array.from({length: times}, () => `<li>${pumpState.generatePump()}</li>`).join(" ");
+    results.innerHTML = `<ul>${pump}</ul>`;
   });
 }
 
 export function setupPermutation(element: HTMLButtonElement, pumpState: PumpState) {
-element.addEventListener('click', () => {
+  element.addEventListener('click', () => {
     pumpState.permutation = !pumpState.permutation;
-    element.innerHTML = pumpState.permutation ? "Permutation Enabled" : "Permutation Disabled";
+    element.innerHTML = pumpState.permutation ? "Enabled" : "Disabled";
   });
 }

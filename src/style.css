@@ -94,3 +94,22 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.config {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 2em;
+}
+
+.config-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+div#results {
+  width: max-content;
+  margin: 0 auto;
+  text-align: left;
+}
