@@ -35,7 +35,7 @@ export class PumpState {
   generatePermutationPump(): string {
     const pumpRes = this.pump.split("");
     const length = this.getPermutationRandomLength();
-    const levels = Array.from({length: length}, _ => Math.random());
+    const levels = Array.from({length: pumpRes.length}, _ => Math.random());
     const order = levels.map((_, i) => i).sort((a, b) => levels[a] - levels[b]);
     const res = order.map((i) => pumpRes[i]).slice(0, length).join("");
     if (res === this.pump) {
