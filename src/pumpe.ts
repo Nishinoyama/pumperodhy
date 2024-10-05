@@ -18,10 +18,10 @@ export class PumpState {
       weight *= pumpRes.length - i;
       weights.push(weight);
     }
-    this.permutationWeights = weights;
-    for (let i = 1; i < n; i++) {
-      weights[i] += weights[i - 1];
+    for (let i = 0; i < n; i++) {
+      weights[i + 1] += weights[i];
     }
+    this.permutationWeights = weights;
   }
 
   generateCombinationPump(): string {
