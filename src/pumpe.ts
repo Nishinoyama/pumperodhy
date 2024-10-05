@@ -65,10 +65,29 @@ export class PumpState {
   }
 }
 
-export function setupPump(element: HTMLButtonElement, pumpState: PumpState, results: HTMLDivElement, times: number = 1) {
+export class ResultsState {
+  results: string[];
+  resultsDiv: HTMLDivElement;
+
+  constructor(resultsDiv: HTMLDivElement) {
+    this.results = [];
+    this.resultsDiv = resultsDiv;
+  }
+
+  renderResults(): void {
+    this.resultsDiv.innerHTML = `<ul>${this.results.map((res) => `<li>${evalPump(res)}</li>`).join("")}</ul>`;
+  }
+
+  setResults(result: string[]): void {
+    this.results = result;
+  }
+}
+
+export function setupPump(element: HTMLButtonElement, pumpState: PumpState, results: ResultsState, times: number = 1) {
   element.addEventListener('click', () => {
-    const pump = Array.from({length: times}, () => `<li>${evalPump(pumpState.generatePump())}</li>`).join("");
-    results.innerHTML = `<ul>${pump}</ul>`;
+    const pump = Array.from({length: times}, () => pumpState.generatePump());
+    results.setResults(pump);
+    results.renderResults();
   });
 }
 
